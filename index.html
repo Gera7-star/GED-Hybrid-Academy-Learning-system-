@@ -141,10 +141,10 @@ function openCourse(name){
     ${lessons.length ? lessons.map(l=>`
       <div class="card">
         <h3>${l.done?'✓ ':''}${esc(l.title)}</h3>
-        <p>${esc(l.notes||'')}</p>
-        <button class="secondary" onclick="openLesson(${l.id})">
-          Open lesson
-        </button>
+        <p>${esc(l.notes||'')}</
+     <button class="secondary" onclick="toggleLesson(${l.id})">
+  Open lesson
+</button>
       </div>
     `).join('') : `
       <div class="card">
