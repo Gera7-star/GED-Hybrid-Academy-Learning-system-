@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#173b35">
+<title>GED Hybrid Academy</title>
+<style>
+:root{--ink:#19332f;--green:#1f5b4d;--mint:#e8f3ed;--cream:#fbf8f0;--gold:#d8a94e;--line:#dfe8e2;--muted:#64736e;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 15px;font-weight:700}
+.primary{background:var(--green);color:white}.secondary{background:var(--mint);color:var(--green)}.quiet{background:transparent;color:var(--green);border:1px solid var(--line)}
+header{background:var(--green);color:white;padding:20px max(18px,calc((100vw - 1050px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;gap:12px;align-items:center}.logo{width:44px;height:44px;border-radius:14px;background:#fff2d8;color:var(--green);display:grid;place-items:center;font-size:23px}
+h1{font-size:20px;margin:0}header p{margin:3px 0 0;font-size:12px;opacity:.8}
+main{max-width:1050px;margin:24px auto;padding:0 16px 48px}.welcome{background:linear-gradient(120deg,#e9f3eb,#fff4dc);padding:24px;border-radius:22px;display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:20px}
+.welcome h2{font-size:clamp(24px,4vw,34px);margin:5px 0}.welcome p{margin:6px 0;color:#50655e}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;color:var(--green)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{background:white;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 5px 18px #19332f08}.card h3{margin:8px 0 5px;font-size:17px}.card p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}.icon{font-size:25px}.section-title{display:flex;justify-content:space-between;align-items:center;margin:26px 0 12px}.section-title h2{margin:0;font-size:20px}.course{display:flex;flex-direction:column;gap:12px;min-height:145px}.course button{margin-top:auto;align-self:flex-start}.bar{height:7px;background:#e9eeeb;border-radius:20px;overflow:hidden;margin-top:12px}.bar span{display:block;height:100%;width:0;background:var(--gold)}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 22px}.nav button.active{background:var(--green);color:white}.nav button{background:#edf3ee;color:var(--green)}
+.panel{display:none}.panel.active{display:block}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.field{display:flex;flex-direction:column;gap:5px;margin:10px 0;flex:1;min-width:180px}.field label{font-size:12px;font-weight:800;color:var(--muted)}input,select,textarea{border:1px solid #d6e1da;border-radius:10px;padding:11px;background:white;color:var(--ink);width:100%}textarea{min-height:85px;resize:vertical}
+.list{display:grid;gap:10px}.item{padding:14px;border:1px solid var(--line);border-radius:13px;display:flex;justify-content:space-between;gap:14px;align-items:center;background:#fff}.item small{display:block;color:var(--muted);margin-top:3px}.pill{font-size:11px;background:var(--mint);color:var(--green);padding:5px 9px;border-radius:30px;white-space:nowrap}
+.notice{padding:12px 14px;border-radius:12px;background:#fff3d9;color:#72511a;font-size:13px;line-height:1.5;margin:14px 0}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:18px}
+@media(max-width:720px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.welcome{align-items:flex-start;flex-direction:column}.item{align-items:flex-start;flex-direction:column}}
+@media(max-width:440px){.grid{grid-template-columns:1fr}header{padding:16px}main{margin-top:16px}.welcome{padding:19px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><div class="logo">📚</div><div><h1>GED Hybrid Academy</h1><p>Learn · Practice · Grow</p></div></div>
+ <button class="quiet" id="switchRole" style="background:#ffffff18;color:white;border-color:#ffffff55" hidden>Switch profile</button>
+</header>
+<main>
+<section id="choose">
+ <div class="welcome"><div><div class="eyebrow">Welcome to your learning space</div><h2>Small steps. Big progress.</h2><p>A simple place for lessons, assignments, and learning progress.</p></div><div style="font-size:56px">🌱</div></div>
+ <div class="section-title"><h2>Who is signing in?</h2></div>
+ <div class="grid">
+  <div class="card"><div class="icon">👩‍🏫</div><h3>Teacher + Student</h3><p>Manage lessons and grades, and keep track of your own learning.</p><br><button class="primary" onclick="enter('teacher')">Open my dashboard</button></div>
+  <div class="card"><div class="icon">👩‍🎓</div><h3>Mom — Student</h3><p>See courses, study materials, assignments, and progress.</p><br><button class="primary" onclick="enter('student')">Open Mom's dashboard</button></div>
+ </div>
+ <div class="notice">Prototype note: this starter version saves information in this browser on this device. The profile buttons are not secure logins, and information will not automatically sync to another phone or computer.</div>
+</section>
+<section id="app" hidden>
+ <div class="welcome"><div><div class="eyebrow" id="roleLabel">Your learning space</div><h2 id="greeting">Welcome back!</h2><p id="subtitle">Your learning journey starts here.</p></div><div style="font-size:48px">🌿</div></div>
+ <nav class="nav">
+  <button class="active" data-panel="home">🏠 Home</button><button data-panel="courses">📚 Courses</button><button data-panel="assignments">📝 Assignments</button><button data-panel="progress">📊 Progress</button><button data-panel="calendar">📅 Calendar</button><button data-panel="teacher" id="teacherNav" hidden>👩‍🏫 Teacher tools</button>
+ </nav>
+ <section class="panel active" id="home">
+  <div class="section-title"><h2>Today's learning</h2><span class="pill" id="dateLabel"></span></div>
+  <div class="grid">
+   <div class="card"><div class="icon">📖</div><h3>Continue learning</h3><p>Pick a course and work through a lesson at your own pace.</p><br><button class="secondary" onclick="showPanel('courses')">View courses</button></div>
+   <div class="card"><div class="icon">✅</div><h3>Assignments</h3><p id="assignmentCount">No assignments yet.</p><br><button class="secondary" onclick="showPanel('assignments')">View assignments</button></div>
+   <div class="card"><div class="icon">🌟</div><h3>Keep going</h3><p>Every completed lesson is progress. Review anything that feels tricky.</p><br><button class="secondary" onclick="showPanel('progress')">View progress</button></div>
+  </div>
+  <div class="section-title"><h2>Academy courses</h2></div><div class="grid" id="homeCourses"></div>
+ </section>
+ <section class="panel" id="courses"><div class="section-title"><h2>My courses</h2></div><div class="grid" id="courseGrid"></div></section>
+ <section class="panel" id="assignments"><div class="section-title"><h2>Assignments</h2></div><div id="assignmentList" class="list"></div></section>
+ <section class="panel" id="progress"><div class="section-title"><h2>My progress</h2></div><div class="grid" id="progressCards"></div><div class="section-title"><h2>Completed lessons</h2></div><div id="completedList" class="list"></div></section>
+ <section class="panel" id="calendar"><div class="section-title"><h2>Calendar & reminders</h2></div><div class="card"><h3>Academy calendar</h3><p>Use this space to keep track of school days, review days, and planned testing.</p><div class="field"><label>Reminder</label><input id="reminderText" placeholder="e.g., Review math on Thursday"></div><div class="field"><label>Date</label><input id="reminderDate" type="date"></div><button class="primary" onclick="addReminder()">Add reminder</button></div><div class="section-title"><h2>Upcoming reminders</h2></div><div class="list" id="reminderList"></div></section>
+ <section class="panel" id="teacher"><div class="section-title"><h2>Teacher tools</h2></div>
+  <div class="grid">
+   <div class="card"><div class="icon">➕</div><h3>Create a lesson</h3><p>Add a lesson to a course so it appears in the course list.</p>
+    <div class="field"><label>Lesson title</label><input id="lessonTitle" placeholder="e.g., Main idea practice"></div>
+    <div class="field"><label>Course</label><select id="lessonCourse"></select></div>
+    <div class="field"><label>Lesson notes / instructions</label><textarea id="lessonNotes" placeholder="Write instructions or paste learning notes here"></textarea></div>
+    <button class="primary" onclick="addLesson()">Save lesson</button>
+   </div>
+   <div class="card"><div class="icon">📝</div><h3>Create an assignment</h3><p>Add work for Mom or yourself to complete.</p>
+    <div class="field"><label>Assignment title</label><input id="assignmentTitle" placeholder="e.g., Order of operations practice"></div>
+    <div class="field"><label>Course</label><select id="assignmentCourse"></select></div>
+    <div class="field"><label>Due date (optional)</label><input id="assignmentDue" type="date"></div>
+    <button class="primary" onclick="addAssignment()">Create assignment</button>
+   </div>
+   <div class="card"><div class="icon">📋</div><h3>Record a grade</h3><p>Keep a simple record of a score.</p>
+    <div class="field"><label>Work / quiz name</label><input id="gradeName" placeholder="e.g., ELA quiz 1"></div>
+    <div class="field"><label>Course</label><select id="gradeCourse"></select></div>
+    <div class="field"><label>Score (%)</label><input id="gradeScore" type="number" min="0" max="100" placeholder="95"></div>
+    <button class="primary" onclick="addGrade()">Save grade</button>
+   </div>
+  </div>
+  <div class="section-title"><h2>Attendance</h2></div><div class="card"><p>Mark today's attendance for your own simple record.</p><br><div class="row"><button class="primary" onclick="markAttendance('Present')">Present</button><button class="secondary" onclick="markAttendance('Absent')">Absent</button><span id="attendanceStatus" class="pill">Not marked today</span></div></div>
+  <div class="notice">For privacy, do not add sensitive personal information. This prototype is not a secure student records system.</div>
+ </section>
+</section>
+</main>
+<footer>GED Hybrid Academy · A family learning project</footer>
+<script>
+const courses=[
+ {name:'ELA',icon:'📖',desc:'Reading, writing, vocabulary, and comprehension'},
+ {name:'Math',icon:'➗',desc:'Number skills, algebra, and problem solving'},
+ {name:'Science',icon:'🧬',desc:'Life science, physical science, and scientific thinking'},
+ {name:'Social Studies',icon:'🇺🇸',desc:'History, civics, geography, and economics'},
+ {name:'ESL',icon:'🗣️',desc:'English practice, vocabulary, grammar, and speaking'},
+ {name:'Bible',icon:'✝️',desc:'Bible reading and reflection'},
+ {name:'Typing',icon:'⌨️',desc:'Keyboard skills and typing practice'}
+];
+const starterLessons=[
+ {id:1,title:"Author's Purpose",course:'ELA',notes:'Learn to identify whether an author writes to inform, persuade, or entertain. Look for clues in the text.',done:false},
+ {id:2,title:'Order of Operations',course:'Math',notes:'Review parentheses, exponents, multiplication/division, and addition/subtraction in order.',done:false},
+ {id:3,title:'Genetics & Heredity',course:'Science',notes:'Explore how traits are passed from parents to offspring and practice using basic genetics vocabulary.',done:false},
+ {id:4,title:'Economic Basics',course:'Social Studies',notes:'Review needs and wants, goods and services, producers and consumers, and basic choices about resources.',done:false}
+];
+let state=JSON.parse(localStorage.getItem('gedAcademyData')||'null')||{lessons:starterLessons,assignments:[],grades:[],reminders:[],attendance:[]};
+let role='student';
+function save(){localStorage.setItem('gedAcademyData',JSON.stringify(state));render()}
+function enter(r){role=r;document.getElementById('choose').hidden=true;document.getElementById('app').hidden=false;document.getElementById('switchRole').hidden=false;document.getElementById('teacherNav').hidden=r!=='teacher';document.getElementById('roleLabel').textContent=r==='teacher'?'Teacher + Student dashboard':"Mom's student dashboard";document.getElementById('greeting').textContent=r==='teacher'?'Welcome, Teacher!':'Welcome, Mom!';document.getElementById('subtitle').textContent=r==='teacher'?'Manage lessons and track learning progress.':'Choose a course and keep moving forward, one lesson at a time.';showPanel('home');render()}
+document.getElementById('switchRole').onclick=()=>{document.getElementById('app').hidden=true;document.getElementById('choose').hidden=false;document.getElementById('switchRole').hidden=true};
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showPanel(b.dataset.panel)));
+function showPanel(id){document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.panel===id))}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function courseCard(c){let ls=state.lessons.filter(l=>l.course===c.name);let done=ls.filter(l=>l.done).length;return `<div class="card course"><div class="icon">${c.icon}</div><h3>${esc(c.name)}</h3><p>${esc(c.desc)}</p><div class="bar"><span style="width:${ls.length?done/ls.length*100:0}%"></span></div><small style="color:var(--muted)">${done} of ${ls.length} lessons completed</small><button class="secondary" onclick="openCourse('${esc(c.name)}')">Open course</button></div>`}
+function render(){
+ document.getElementById('dateLabel').textContent=new Date().toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
+ document.getElementById('homeCourses').innerHTML=courses.slice(0,3).map(courseCard).join('');
+ document.getElementById('courseGrid').innerHTML=courses.map(courseCard).join('');
+ ['lessonCourse','assignmentCourse','gradeCourse'].forEach(id=>{let s=document.getElementById(id),v=s.value;s.innerHTML=courses.map(c=>`<option>${esc(c.name)}</option>`).join('');if(v)s.value=v});
+ document.getElementById('assignmentCount').textContent=state.assignments.length?`${state.assignments.filter(a=>!a.done).length} assignment(s) still to do.`:'No assignments yet. Your teacher can add some.';
+ document.getElementById('assignmentList').innerHTML=state.assignments.length?state.assignments.map(a=>`<div class="item"><div><strong>${esc(a.title)}</strong><small>${esc(a.course)}${a.due?' · Due '+esc(a.due):''}</small></div><div class="row"><span class="pill">${a.done?'Completed':'To do'}</span>${!a.done?`<button class="secondary" onclick="completeAssignment(${a.id})">Mark done</button>`:''}</div></div>`).join(''):'<div class="card"><p>No assignments yet. Your teacher can add assignments from Teacher tools.</p></div>';
+ let total=state.lessons.length,done=state.lessons.filter(l=>l.done).length,avg=state.grades.length?Math.round(state.grades.reduce((s,g)=>s+g.score,0)/state.grades.length):null;
+ document.getElementById('progressCards').innerHTML=[['📘','Lessons completed',`${done} / ${total}`],['⭐','Average recorded score',avg===null?'No grades yet':avg+'%'],['📅','Attendance records',state.attendance.length]].map(x=>`<div class="card"><div class="icon">${x[0]}</div><h3>${x[2]}</h3><p>${x[1]}</p></div>`).join('');
+ document.getElementById('completedList').innerHTML=[...state.lessons.map(l=>`<div class="item"><div><strong>${esc(l.title)}</strong><small>${esc(l.course)} · Lesson</small></div><button class="${l.done?'secondary':'quiet'}" onclick="toggleLesson(${l.id})">${l.done?'✓ Completed':'Mark complete'}</button></div>`),...state.grades.map(g=>`<div class="item"><div><strong>${esc(g.name)}</strong><small>${esc(g.course)} · Recorded grade</small></div><span class="pill">${g.score}%</span></div>`)].join('')||'<div class="card"><p>Your progress will appear here.</p></div>';
+ document.getElementById('reminderList').innerHTML=state.reminders.length?state.reminders.map(r=>`<div class="item"><div><strong>${esc(r.text)}</strong><small>${esc(r.date||'No date selected')}</small></div><button class="quiet" onclick="removeReminder(${r.id})">Remove</button></div>`).join(''):'<div class="card"><p>No reminders yet.</p></div>';
+ let today=new Date().toISOString().slice(0,10),att=state.attendance.find(a=>a.date===today);document.getElementById('attendanceStatus').textContent=att?att.status+' · '+today:'Not marked today';
+}
+function openCourse(name){showPanel('courses');let els=[...document.querySelectorAll('#courseGrid .card')];let c=courses.find(c=>c.name===name);let lessons=state.lessons.filter(l=>l.course===name);alert(name+'\\n\\n'+c.desc+'\\n\\n'+(lessons.length?lessons.map(l=>(l.done?'✓ ':'• ')+l.title+'\\n'+l.notes).join('\\n\\n'):'No lessons added yet.'))}
+function toggleLesson(id){let l=state.lessons.find(x=>x.id===id);if(l)l.done=!l.done;save()}
+function addLesson(){let title=document.getElementById('lessonTitle').value.trim();if(!title)return alert('Please enter a lesson title.');state.lessons.push({id:Date.now(),title,course:document.getElementById('lessonCourse').value,notes:document.getElementById('lessonNotes').value.trim(),done:false});document.getElementById('lessonTitle').value='';document.getElementById('lessonNotes').value='';save();alert('Lesson saved!')}
+function addAssignment(){let title=document.getElementById('assignmentTitle').value.trim();if(!title)return alert('Please enter an assignment title.');state.assignments.push({id:Date.now(),title,course:document.getElementById('assignmentCourse').value,due:document.getElementById('assignmentDue').value,done:false});document.getElementById('assignmentTitle').value='';save();alert('Assignment created!')}
+function completeAssignment(id){let a=state.assignments.find(x=>x.id===id);if(a)a.done=true;save()}
+function addGrade(){let name=document.getElementById('gradeName').value.trim(),score=Number(document.getElementById('gradeScore').value);if(!name||document.getElementById('gradeScore').value===''||score<0||score>100)return alert('Enter a work name and a score from 0 to 100.');state.grades.push({id:Date.now(),name,course:document.getElementById('gradeCourse').value,score});document.getElementById('gradeName').value='';document.getElementById('gradeScore').value='';save();alert('Grade saved!')}
+function markAttendance(status){let date=new Date().toISOString().slice(0,10),old=state.attendance.find(a=>a.date===date);if(old)old.status=status;else state.attendance.push({date,status});save()}
+function addReminder(){let text=document.getElementById('reminderText').value.trim();if(!text)return alert('Please enter a reminder.');state.reminders.push({id:Date.now(),text,date:document.getElementById('reminderDate').value});document.getElementById('reminderText').value='';document.getElementById('reminderDate').value='';save()}
+function removeReminder(id){state.reminders=state.reminders.filter(r=>r.id!==id);save()}
+render();
+</script>
+</body>
+</html>
