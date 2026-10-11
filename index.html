@@ -123,7 +123,37 @@ function render(){
  document.getElementById('reminderList').innerHTML=state.reminders.length?state.reminders.map(r=>`<div class="item"><div><strong>${esc(r.text)}</strong><small>${esc(r.date||'No date selected')}</small></div><button class="quiet" onclick="removeReminder(${r.id})">Remove</button></div>`).join(''):'<div class="card"><p>No reminders yet.</p></div>';
  let today=new Date().toISOString().slice(0,10),att=state.attendance.find(a=>a.date===today);document.getElementById('attendanceStatus').textContent=att?att.status+' · '+today:'Not marked today';
 }
-function openCourse(name){showPanel('courses');let els=[...document.querySelectorAll('#courseGrid .card')];let c=courses.find(c=>c.name===name);let lessons=state.lessons.filter(l=>l.course===name);alert(name+'\\n\\n'+c.desc+'\\n\\n'+(lessons.length?lessons.map(l=>(l.done?'✓ ':'• ')+l.title+'\\n'+l.notes).join('\\n\\n'):'No lessons added yet.'))}
+function openCourse(name){
+  showPanel('courses');
+  let c=courses.find(c=>c.name===name);
+  let lessons=state.lessons.filter(l=>l.course===name);
+
+  let grid=document.getElementById('courseGrid');
+
+  grid.innerHTML=`
+    <div class="card course">
+      <button class="secondary" onclick="render()">← Back to courses</button>
+      <div class="icon">${c.icon}</div>
+      <h2>${esc(c.name)}</h2>
+      <p>${esc(c.desc)}</p>
+    </div>
+
+    ${lessons.length ? lessons.map(l=>`
+      <div class="card">
+        <h3>${l.done?'✓ ':''}${esc(l.title)}</h3>
+        <p>${esc(l.notes||'')}</p>
+        <button class="secondary" onclick="openLesson(${l.id})">
+          Open lesson
+        </button>
+      </div>
+    `).join('') : `
+      <div class="card">
+        <h3>No lessons yet</h3>
+        <p>This course does not have any lessons yet.</p>
+      </div>
+    `}
+  `;
+}
 function toggleLesson(id){let l=state.lessons.find(x=>x.id===id);if(l)l.done=!l.done;save()}
 function addLesson(){let title=document.getElementById('lessonTitle').value.trim();if(!title)return alert('Please enter a lesson title.');state.lessons.push({id:Date.now(),title,course:document.getElementById('lessonCourse').value,notes:document.getElementById('lessonNotes').value.trim(),done:false});document.getElementById('lessonTitle').value='';document.getElementById('lessonNotes').value='';save();alert('Lesson saved!')}
 function addAssignment(){let title=document.getElementById('assignmentTitle').value.trim();if(!title)return alert('Please enter an assignment title.');state.assignments.push({id:Date.now(),title,course:document.getElementById('assignmentCourse').value,due:document.getElementById('assignmentDue').value,done:false});document.getElementById('assignmentTitle').value='';save();alert('Assignment created!')}
