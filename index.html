@@ -154,7 +154,30 @@ function openCourse(name){
     `}
   `;
 }
-function toggleLesson(id){let l=state.lessons.find(x=>x.id===id);if(l)l.done=!l.done;save()}
+function toggleLesson(id){
+  let l=state.lessons.find(x=>x.id===id);
+  if(!l)return;
+
+  let panel=document.getElementById('courseGrid');
+
+  panel.innerHTML=`
+    <div class="card">
+      <button class="secondary" onclick="render()">← Back</button>
+      <h2>${esc(l.title)}</h2>
+      <p>${esc(l.notes||'No lesson content yet.')}</p>
+      <button class="secondary" onclick="completeLesson(${l.id})">
+        ${l.done?'✓ Completed':'Mark complete'}
+      </button>
+    </div>
+  `;
+}
+
+function completeLesson(id){
+  let l=state.lessons.find(x=>x.id===id);
+  if(l)l.done=true;
+  save();
+  toggleLesson(id);
+}
 function addLesson(){let title=document.getElementById('lessonTitle').value.trim();if(!title)return alert('Please enter a lesson title.');state.lessons.push({id:Date.now(),title,course:document.getElementById('lessonCourse').value,notes:document.getElementById('lessonNotes').value.trim(),done:false});document.getElementById('lessonTitle').value='';document.getElementById('lessonNotes').value='';save();alert('Lesson saved!')}
 function addAssignment(){let title=document.getElementById('assignmentTitle').value.trim();if(!title)return alert('Please enter an assignment title.');state.assignments.push({id:Date.now(),title,course:document.getElementById('assignmentCourse').value,due:document.getElementById('assignmentDue').value,done:false});document.getElementById('assignmentTitle').value='';save();alert('Assignment created!')}
 function completeAssignment(id){let a=state.assignments.find(x=>x.id===id);if(a)a.done=true;save()}
